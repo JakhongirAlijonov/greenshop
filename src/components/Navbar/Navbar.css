@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;800;900&display=swap');
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Navbar.css */
+
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 50px 20px;
+  }
+  
+  .site-header img {
+    height: 40px;
+  }
+  
+  .header-list {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .header-item {
+    margin: 0 15px;
+    position: relative;
+  }
+  
+  .header-item a, .header-item span {
+    text-decoration: none;
+    color: #274C5B;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .header-item .hidden-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .header-item .hidden-links a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #000;
+    white-space: nowrap;
+  }
+  
+  .header-item .hidden-links a:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .header-item.page-show:hover .hidden-links,
+  .header-item.page-show .hidden-links {
+    display: block;
+  }
+  
+  .header-item.page-show .hidden-links {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .user button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #000;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .user button:hover {
+    background-color: #333;
+  }
+  
