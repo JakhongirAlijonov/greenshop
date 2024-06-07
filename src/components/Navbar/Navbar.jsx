@@ -1,11 +1,15 @@
 import { Link } from "react-router-dom"
 import './Navbar.css'
 import { useState } from "react"
+import Signup from "../SignUp/Signup"
 function Navbar() {
   const [ isOpen , setIsOpen ] = useState(false)
-
+  const [ isSignUpOpen , setIsSignUpOpen ] = useState(false)
+const handleSignUp = ()=>{
+  setIsSignUpOpen(!isSignUpOpen)
+}
   const handleClick = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(true);
   };
 
   const handleLinkClick = () => {
@@ -44,7 +48,11 @@ function Navbar() {
 
 
     <div className="user">
-      <button>User</button>
+      <button onClick={ ()=> handleSignUp()  } >Sign up</button>
+      {
+        isSignUpOpen &&  
+        <Signup isSignUpOpen={isSignUpOpen} setIsSignUpOpen={setIsSignUpOpen} />
+      }
     </div>
     </div>
   )
