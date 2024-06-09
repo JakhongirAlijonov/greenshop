@@ -1,15 +1,18 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { auth, googleProvider } from '../../firebase/Config';
-import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { Link, useNavigate } from 'react-router-dom';
 import './Signup.css';
+import { doCreateUserWithEmailAndPassword, doSignInWithGoogle } from '../../firebase/auth';
 
-function Signup({ setIsSignUpOpen, isSignUpOpen }) {
+function Signup() {
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  const handleClose = () => {
-    setIsSignUpOpen(false);
+  const handleName = (e) => {
+    setName(e.target.value);
   };
 
   const handleEmailChange = (e) => {
@@ -22,30 +25,41 @@ function Signup({ setIsSignUpOpen, isSignUpOpen }) {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    setError(null);
+    const passwordRegex = /^(?=.*[A-Z]).{6,}$/;
+    if (!passwordRegex.test(password)) {
+      setError('Password must be at least 6 characters long and contain at least one uppercase letter.');
+      return;
+    }
+  
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      console.log('User signed up with email:', email);
+      await doCreateUserWithEmailAndPassword(email, password, name);
+      navigate("/"); // Redirect to home page or any other page after successful signup
     } catch (error) {
-      console.error('Error signing up with email:', error);
+      setError('Error signing up with email: ' + error.message);
     }
   };
 
   const handleGoogleSignUp = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      await doSignInWithGoogle();
       console.log('User signed up with Google');
+      navigate("/"); // Redirect to home page or any other page after successful Google signup
     } catch (error) {
-      console.error('Error signing up with Google:', error);
+      setError('Error signing up with Google: ' + error.message);
     }
   };
 
   return (
-    <div className={`signup-modal ${isSignUpOpen ? 'open' : ''}`}>
+    <div>
+      <Link to={'/'}> Site logo </Link>
       <div className="signup-content">
-        <span className="close" onClick={handleClose}>X</span>
         <h2>Sign Up</h2>
+        {error && <p className="error">{error}</p>}
         <form onSubmit={handleSignUp}>
           <div className="form-group">
+            <label htmlFor='name'>Name:</label>
+            <input type='text' id='name' value={name} onChange={handleName} required />
             <label htmlFor="email">Email:</label>
             <input
               type="email"
@@ -64,6 +78,7 @@ function Signup({ setIsSignUpOpen, isSignUpOpen }) {
               onChange={handlePasswordChange}
               required
             />
+            { error && <p> {error} </p> }
           </div>
           <button type="submit">Sign Up</button>
         </form>
