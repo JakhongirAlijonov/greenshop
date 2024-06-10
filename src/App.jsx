@@ -13,6 +13,7 @@ import Service from "./pages/Service/Service";
 import Signup from "./pages/SignUp/Signup";
 import Login from "./pages/Login/Login";
 import { AuthProvider } from "./contexts/authContext";
+import Profile from "./pages/Profile/Profile";
 
 function MainContent() {
   const location = useLocation();
@@ -32,6 +33,7 @@ function MainContent() {
         <Route path="/team" element={<Team />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
       {shouldShowNavbar && <Footer />}
 

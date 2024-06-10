@@ -1,15 +1,16 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import './Navbar.css';
 import { useState } from "react";
 import { useAuth } from "../../contexts/authContext/index"; // Adjust the import path as necessary
-import { doSignOut } from "../../firebase/auth";
+import { faChevronDown , faUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 function Navbar() {
   const { currentUser, userLoggedIn } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
-const navigate  = useNavigate()
   const handleClick = () => {
-    setIsOpen(true);
+    setIsOpen(!isOpen);
   };
 
   const handleLinkClick = () => {
@@ -29,7 +30,7 @@ const navigate  = useNavigate()
           <Link to="about">About</Link>
         </li>
         <li className="header-item page-show">
-          <span onClick={handleClick}>Pages 🔽</span>
+          <span onClick={handleClick}>Pages <FontAwesomeIcon icon={faChevronDown} /> </span>
           {isOpen && (
             <div className="hidden-links">
               <Link to={'/service'} onClick={handleLinkClick}>Service</Link>
@@ -49,13 +50,12 @@ const navigate  = useNavigate()
       <div className="user">
         {userLoggedIn ? (
          <div>
-         <span>Welcome, {currentUser.displayName || currentUser.email}</span>
-         <button onClick={()=> doSignOut().then(()=> {navigate('/') }) } >Log out</button>
+         <Link to={'/profile'} className="prof-link" > <FontAwesomeIcon icon={faUser} /> {currentUser.displayName || currentUser.email}</Link>
+         
          </div>
         ) : (
           <>
-            <Link to={'/signup'}>Sign up</Link>
-            <Link to={'/signin'}>Sign in</Link>
+            <Link to={'/signin'} className="signin">Sign in</Link>
           </>
         )}
       </div>

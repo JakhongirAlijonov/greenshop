@@ -74,16 +74,21 @@ body {
     transform: translateY(0);
   }
   
-  .user button {
+  .signin  {
     padding: 10px 20px;
     border: none;
     background-color: #000;
     color: #fff;
     cursor: pointer;
     border-radius: 5px;
+    text-decoration: none;
   }
   
-  .user button:hover {
-    background-color: #333;
+  .signin:hover {
+    background-color: #3333338c;
   }
   
+  .prof-link{
+    text-decoration: none;
+    color: #000;
+  }
