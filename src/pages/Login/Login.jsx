@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext/index";
 import { useState } from "react";
 import {
@@ -30,8 +30,11 @@ function Login() {
   };
   return (
     <div>
+    <Link to={'/'}> <img src="./public/logo.svg" alt="site logo" /> </Link>
+    <div className="login-greet">Welcome back mate !</div>
       {userLoggedIn.userLoggedIn && <Navigate to={"/"} replace={true} />}
       <form onSubmit={(e) => submitEmail(e)}>
+
         <input
           type="email"
           placeholder="Email..."

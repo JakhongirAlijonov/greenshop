@@ -33,7 +33,8 @@ function MainContent() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Login />} />
       </Routes>
-      <Footer />
+      {shouldShowNavbar && <Footer />}
+
     </>
   );
 }

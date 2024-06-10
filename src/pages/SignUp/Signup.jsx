@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';
 import './Signup.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { doCreateUserWithEmailAndPassword, doSignInWithGoogle } from '../../firebase/auth';
 
 function Signup() {
@@ -9,7 +11,19 @@ function Signup() {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const navigate = useNavigate();
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+
+  const showErrors = (err) => {
+    setError(err);
+    setTimeout(() => {
+      setError(null);
+    }, 5000);
+  };
 
   const handleName = (e) => {
     setName(e.target.value);
@@ -28,15 +42,17 @@ function Signup() {
     setError(null);
     const passwordRegex = /^(?=.*[A-Z]).{6,}$/;
     if (!passwordRegex.test(password)) {
-      setError('Password must be at least 6 characters long and contain at least one uppercase letter.');
+      showErrors('Password must be at least 6 characters long and contain at least one uppercase letter.');
       return;
     }
-  
+
     try {
       await doCreateUserWithEmailAndPassword(email, password, name);
-      navigate("/"); // Redirect to home page or any other page after successful signup
+      navigate('/'); // Redirect to home page or any other page after successful signup
     } catch (error) {
-      setError('Error signing up with email: ' + error.message);
+      if (error.message.includes('already-in-use')) {
+        showErrors("Bu email avval ro'yxatdan o'tgan");
+      }
     }
   };
 
@@ -44,55 +60,55 @@ function Signup() {
     try {
       await doSignInWithGoogle();
       console.log('User signed up with Google');
-      navigate("/"); // Redirect to home page or any other page after successful Google signup
+      navigate('/'); // Redirect to home page or any other page after successful Google signup
     } catch (error) {
-      setError('Error signing up with Google: ' + error.message);
+      showErrors('Error while signing in with Google. Please try again!');
     }
   };
 
   return (
     <div>
-      <Link to={'/'}> Site logo </Link>
       <div className="signup-content">
-        <h2>Sign Up</h2>
-        {error && <p className="error">{error}</p>}
+      <Link to={'/'}> <img src="./public/logo.svg" alt="site logo" /> </Link>
+        <h2>Sign up to use cool features !</h2>
         <form onSubmit={handleSignUp}>
           <div className="form-group">
-            <label htmlFor='name'>Name:</label>
-            <input type='text' id='name' value={name} onChange={handleName} required />
+            <label htmlFor="name">Name:</label>
+            <input type="text" id="name" value={name} onChange={handleName} required />
             <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={handleEmailChange}
-              required
-            />
+            <input type="email" id="email" value={email} onChange={handleEmailChange} required />
           </div>
-          <div className="form-group">
+          <div className="form-group password-wrapper">
             <label htmlFor="password">Password:</label>
             <input
-              type="password"
+              type={isPasswordVisible ? 'text' : 'password'}
               id="password"
               value={password}
               onChange={handlePasswordChange}
               required
             />
-            { error && <p> {error} </p> }
+            <FontAwesomeIcon
+              icon={isPasswordVisible ? faEyeSlash : faEye}
+              className="eye-icon"
+              onClick={togglePasswordVisibility}
+            />
+            <ul className="pas-suggest">
+              <li>At least 1 uppercase</li>
+              <li>At least 1 number</li>
+              <li>At least 6 characters</li>
+            </ul>
           </div>
+          {error && <p className="error">{error}</p>}
           <button type="submit">Sign Up</button>
         </form>
+        <Link className='to-signin' to='/signin'>Already have an account ? Sign in here. </Link>
+        <p className="sug">or use your account in:</p>
         <button className="google-signup" onClick={handleGoogleSignUp}>
-          Sign Up with Google
+          <FontAwesomeIcon icon={faGoogle}  />
         </button>
       </div>
     </div>
   );
 }
-
-Signup.propTypes = {
-  setIsSignUpOpen: PropTypes.func.isRequired,
-  isSignUpOpen: PropTypes.bool.isRequired,
-};
 
 export default Signup;
