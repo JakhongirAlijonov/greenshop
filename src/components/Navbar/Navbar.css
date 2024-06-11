@@ -91,4 +91,11 @@ body {
   .prof-link{
     text-decoration: none;
     color: #000;
+
+  }
+
+  .nav-user-img{
+    border-radius: 50%;
+    vertical-align: middle;
+  margin-right: 10px;
   }

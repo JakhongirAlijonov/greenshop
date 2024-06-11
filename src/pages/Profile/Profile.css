@@ -1,0 +1,37 @@
+/* FileUploader.css */
+.profile-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.file-uploader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+  }
+  
+  .custom-file-upload:hover {
+    background-color: #0056b3;
+  }
+  
+  p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .logout{
+    background-color: red;
+  }

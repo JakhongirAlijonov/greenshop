@@ -50,7 +50,11 @@ function Navbar() {
       <div className="user">
         {userLoggedIn ? (
          <div>
-         <Link to={'/profile'} className="prof-link" > <FontAwesomeIcon icon={faUser} /> {currentUser.displayName || currentUser.email}</Link>
+         <Link to={'/profile'} className="prof-link" > 
+
+          { currentUser.photoURL ? <img src={currentUser.photoURL} alt="user photo" className="nav-user-img" /> : <FontAwesomeIcon icon={faUser} />  }
+
+         {currentUser.displayName || currentUser.email}</Link>
          
          </div>
         ) : (
